@@ -1,0 +1,11 @@
+steeredReg
+========
+
+A Slicer module for steered registration (based on Steve Pieper's Regmatic module).
+
+For interactive translation:
+1) Click "Interaction"
+2) Click anywhere in the slice viewer window, press "a" for entering translation action state.
+   Drag the forground image for alignment with background image, the transformation is updated in real time.
+3) Press "x" to exit the translation action state. Or Click "Stop" to exit the interaction mode.  
+   
