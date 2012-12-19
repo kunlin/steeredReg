@@ -286,6 +286,7 @@ class steeredRegWidget:
     self.translation = qt.QRadioButton("Translation", actCollapsibleButton)
     self.translation.toolTip = "Perform translation on 2D slices."
     actCollapsibleButton.layout().addWidget(self.translation)
+    
     self.scaling = qt.QRadioButton("Scaling", actCollapsibleButton)
     self.scaling.setToolTip("Perform scaling on 2D slices.")
     actCollapsibleButton.layout().addWidget(self.scaling)
