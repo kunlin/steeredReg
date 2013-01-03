@@ -323,18 +323,20 @@ class steeredRegWidget:
 
     # to support quicker development:
     import os
-    if os.getenv('USERNAME') == '200019959':
-      self.logic.testingData()
-      self.fixedSelector.setCurrentNode(slicer.util.getNode('MRHead*'))
-      self.movingSelector.setCurrentNode(slicer.util.getNode('neutral*'))
-      self.transformSelector.setCurrentNode(slicer.util.getNode('movingToFixed*'))
-      self.initialTransformSelector.setCurrentNode(slicer.util.getNode('movingToFixed*'))
+    #if os.getenv('USERNAME') == '200019959':
+      #self.logic.testingData()
+      #self.fixedSelector.setCurrentNode(slicer.util.getNode('MRHead*'))
+      #self.movingSelector.setCurrentNode(slicer.util.getNode('neutral*'))
+      #self.transformSelector.setCurrentNode(slicer.util.getNode('movingToFixed*'))
+      #self.initialTransformSelector.setCurrentNode(slicer.util.getNode('movingToFixed*'))
 
 
   def updateLogicFromGUI(self,args):
     self.logic.fixed = self.fixedSelector.currentNode()
     self.logic.moving = self.movingSelector.currentNode()
     self.logic.transform = self.transformSelector.currentNode()
+
+    self.logic.moving.SetAndObserveTransformNodeID(self.logic.transform.GetID())
     
     self.logic.histogramBin = self.histogramBinSlider.value
     self.logic.spatialSample = self.spatialSampleSlider.value
@@ -816,38 +818,38 @@ class steeredRegLogic(object):
       cmd.SetAbortFlag(1)
 
 
-  def testingData(self):
-    """Load some default data for development
-    and set up a transform and viewing scenario for it.
-    """
-    if not slicer.util.getNodes('MRHead*'):
-      import os
-      fileName = "C:\Projects\NAMIC\data\MR-head.nrrd"
-      vl = slicer.modules.volumes.logic()
-      volumeNode = vl.AddArchetypeVolume(fileName, "MRHead", 0)
-    if not slicer.util.getNodes('neutral*'):
-      import os
-      fileName = "C:\Projects\NAMIC\data\spgr.nrrd"
-      vl = slicer.modules.volumes.logic()
-      volumeNode = vl.AddArchetypeVolume(fileName, "neutral", 0)
-    if not slicer.util.getNodes('movingToFixed'):
-      # Create transform node
-      transform = slicer.vtkMRMLLinearTransformNode()
-      transform.SetName('movingToFixed')
-      slicer.mrmlScene.AddNode(transform)
-    head = slicer.util.getNode('MRHead')
-    neutral = slicer.util.getNode('neutral')
-    transform = slicer.util.getNode('movingToFixed')
-    ###
-    neutral.SetAndObserveTransformNodeID(transform.GetID())
-    ###
-    compositeNodes = slicer.util.getNodes('vtkMRMLSliceCompositeNode*')
-    for compositeNode in compositeNodes.values():
-      compositeNode.SetBackgroundVolumeID(head.GetID())
-      compositeNode.SetForegroundVolumeID(neutral.GetID())
-      compositeNode.SetForegroundOpacity(0.5)
-    applicationLogic = slicer.app.applicationLogic()
-    applicationLogic.FitSliceToAll()
+##  def testingData(self):
+##    """Load some default data for development
+##    and set up a transform and viewing scenario for it.
+##    """
+##    if not slicer.util.getNodes('MRHead*'):
+##      import os
+##      fileName = "C:\Projects\NAMIC\data\MR-head.nrrd"
+##      vl = slicer.modules.volumes.logic()
+##      volumeNode = vl.AddArchetypeVolume(fileName, "MRHead", 0)
+##    if not slicer.util.getNodes('neutral*'):
+##      import os
+##      fileName = "C:\Projects\NAMIC\data\spgr.nrrd"
+##      vl = slicer.modules.volumes.logic()
+##      volumeNode = vl.AddArchetypeVolume(fileName, "neutral", 0)
+##    if not slicer.util.getNodes('movingToFixed'):
+##      # Create transform node
+##      transform = slicer.vtkMRMLLinearTransformNode()
+##      transform.SetName('movingToFixed')
+##      slicer.mrmlScene.AddNode(transform)
+##    head = slicer.util.getNode('MRHead')
+##    neutral = slicer.util.getNode('neutral')
+##    transform = slicer.util.getNode('movingToFixed')
+##    ###
+##    # neutral.SetAndObserveTransformNodeID(transform.GetID())
+##    ###
+##    compositeNodes = slicer.util.getNodes('vtkMRMLSliceCompositeNode*')
+##    for compositeNode in compositeNodes.values():
+##      compositeNode.SetBackgroundVolumeID(head.GetID())
+##      compositeNode.SetForegroundVolumeID(neutral.GetID())
+##      compositeNode.SetForegroundOpacity(0.5)
+##    applicationLogic = slicer.app.applicationLogic()
+##    applicationLogic.FitSliceToAll()
 
 
     
